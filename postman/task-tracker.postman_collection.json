@@ -1,0 +1,305 @@
+{
+  "info": {
+    "name": "Task Tracker API",
+    "description": "OpenMapper Demo — Task Tracker REST API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    }
+  ],
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "List all users",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/users"
+          }
+        },
+        {
+          "name": "Get user by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/users/1"
+          }
+        },
+        {
+          "name": "Get user with tasks (projection)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/users/1/tasks"
+          }
+        },
+        {
+          "name": "Create user",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/users",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Dave\",\n  \"lastName\": \"Miller\",\n  \"email\": \"dave@example.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update user",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/users/1",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Alice\",\n  \"lastName\": \"Johnson-Updated\",\n  \"email\": \"alice.updated@example.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete user",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/users/4"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tasks",
+      "item": [
+        {
+          "name": "List all tasks",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/tasks"
+          }
+        },
+        {
+          "name": "Filter tasks by status",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks?status=TODO",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tasks"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "TODO"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter tasks by executor",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks?executorId=2",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tasks"],
+              "query": [
+                {
+                  "key": "executorId",
+                  "value": "2"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get task detail (with sub-tasks)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/tasks/1"
+          }
+        },
+        {
+          "name": "Get sub-tasks",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/tasks/1/subtasks"
+          }
+        },
+        {
+          "name": "Create task",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/tasks",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Write unit tests\",\n  \"description\": \"Cover service layer with tests\",\n  \"status\": \"TODO\",\n  \"type\": \"TASK\",\n  \"tags\": \"testing,quality\",\n  \"projectId\": 1,\n  \"ownerId\": 1,\n  \"executorId\": 2,\n  \"parentId\": null\n}"
+            }
+          }
+        },
+        {
+          "name": "Create sub-task",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/tasks",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Test UserService\",\n  \"description\": \"Unit tests for user service\",\n  \"status\": \"TODO\",\n  \"type\": \"SUB_TASK\",\n  \"tags\": \"testing\",\n  \"projectId\": 1,\n  \"ownerId\": 1,\n  \"executorId\": 2,\n  \"parentId\": 8\n}"
+            }
+          }
+        },
+        {
+          "name": "Update task status",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/tasks/1/status",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"DONE\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Assign executor",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/tasks/5/executor",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"executorId\": 3\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete task",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/tasks/7"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Projects",
+      "item": [
+        {
+          "name": "List all projects",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/projects"
+          }
+        },
+        {
+          "name": "Get project by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/projects/1"
+          }
+        },
+        {
+          "name": "Get project overview (statistics projection)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/projects/1/overview"
+          }
+        },
+        {
+          "name": "Get project members",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/projects/1/members"
+          }
+        },
+        {
+          "name": "Get project tasks",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/projects/1/tasks"
+          }
+        },
+        {
+          "name": "Create project",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/projects",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Backend Services\",\n  \"description\": \"Microservices infrastructure\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Add member to project",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/projects/1/members",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 4,\n  \"role\": \"member\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Remove member from project",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/projects/1/members/4"
+          }
+        },
+        {
+          "name": "Delete project",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/projects/2"
+          }
+        }
+      ]
+    }
+  ]
+}

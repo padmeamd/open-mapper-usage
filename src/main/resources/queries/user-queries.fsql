@@ -1,0 +1,29 @@
+# User queries
+
+findAllUsers = {
+    SELECT id, first_name, last_name, email FROM users ORDER BY id
+}
+
+findUserById = {
+    SELECT id, first_name, last_name, email FROM users WHERE id = [id]
+}
+
+findUserWithTasks = {
+    SELECT u.id, u.first_name, u.last_name, u.email,
+           t.id, t.title, t.status, t.type, t.tags
+    FROM users u
+    LEFT JOIN tasks t ON u.id = t.owner_id
+    WHERE u.id = [id]
+}
+
+createUser = {
+    INSERT INTO users (first_name, last_name, email) VALUES ([first_name], [last_name], [email])
+}
+
+updateUser = {
+    UPDATE users SET first_name = [first_name], last_name = [last_name], email = [email] WHERE id = [id]
+}
+
+deleteUser = {
+    DELETE FROM users WHERE id = [id]
+}

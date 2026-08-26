@@ -1,0 +1,48 @@
+# Task queries
+
+findAllTasks = {
+    SELECT id, title, status, type, tags FROM tasks ORDER BY created_at DESC
+}
+
+findTaskById = {
+    SELECT t.id, t.title, t.description, t.status, t.type, t.tags,
+           t.project_id, t.owner_id, t.executor_id, t.parent_id,
+           t.created_at, t.updated_at,
+           st.id, st.title, st.status, st.type, st.tags
+    FROM tasks t
+    LEFT JOIN tasks st ON t.id = st.parent_id
+    WHERE t.id = [id]
+}
+
+findTasksByProject = {
+    SELECT id, title, status, type, tags FROM tasks WHERE project_id = [project_id] ORDER BY created_at DESC
+}
+
+findTasksByStatus = {
+    SELECT id, title, status, type, tags FROM tasks WHERE status = [status] ORDER BY created_at DESC
+}
+
+findTasksByExecutor = {
+    SELECT id, title, status, type, tags FROM tasks WHERE executor_id = [executor_id] ORDER BY created_at DESC
+}
+
+findSubTasks = {
+    SELECT id, title, status, type, tags FROM tasks WHERE parent_id = [parent_id] ORDER BY id
+}
+
+createTask = {
+    INSERT INTO tasks (title, description, status, type, tags, project_id, owner_id, executor_id, parent_id)
+    VALUES ([title], [description], [status], [type], [tags], [project_id], [owner_id], [executor_id], [parent_id])
+}
+
+updateTaskStatus = {
+    UPDATE tasks SET status = [status], updated_at = CURRENT_TIMESTAMP WHERE id = [id]
+}
+
+assignExecutor = {
+    UPDATE tasks SET executor_id = [executor_id], updated_at = CURRENT_TIMESTAMP WHERE id = [id]
+}
+
+deleteTask = {
+    DELETE FROM tasks WHERE id = [id]
+}
